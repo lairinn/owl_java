@@ -4,13 +4,9 @@ public class MyFirstProgram {
 
 public static void main (String[] args) {
 
-  Point p1 = new Point();
- p1.x = 1;
- p1.y = 1;
+  Point p1 = new Point(1,1);
 
-  Point p2 = new Point();
-  p2.x = 0;
- p2.y = 0;
+  Point p2 = new Point(0,0);
 
   double result = p2.distance(p1);
   System.out.println("Расстояние = " + result);
