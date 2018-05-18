@@ -18,10 +18,6 @@ public class ContactData {
   }
 
 
-
-
-}
-
   public String getFirstName() {
     return firstName;
   }

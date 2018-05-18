@@ -2,6 +2,7 @@ package ru.stqa.pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.NameData;
 
 /**
@@ -36,7 +37,7 @@ public class ContactHelper extends HelperBase {
 
   }
 
-  public void fillName(NameData nameData) {
+  public void fillName(ContactData nameData) {
     type(By.name("firstname"), nameData.getFirstName());
     click(By.name("theform"));
     type(By.name("lastname"), nameData.getLastName());
