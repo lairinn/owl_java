@@ -2,7 +2,7 @@ package ru.stqa.pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import ru.stqa.pft.addressbook.model.NameData;
+import ru.stqa.pft.addressbook.model.ContactData;
 
 /**
  * Created by ishulga on 16.05.2018.
@@ -20,23 +20,25 @@ public class ContactHelper extends HelperBase {
     click(By.xpath("//div[@id='content']/form/input[21]"));
   }
 
-  public void fillMail(String email) {
-    type(By.name("email"), email);
-
-  }
-
-  public void fillPhone(String homephone) {
-    type(By.name("home"), homephone);
+  public void fillMail(ContactData emailData) {
     click(By.name("theform"));
+     type(By.name("firstname"), emailData.getEmail());
+
   }
 
-  public void fillAddress(String address) {
+  public void fillPhone(ContactData homePhoneData) {
+    click(By.name("theform"));
+    type(By.name("home"), homePhoneData.getHomePhone());
+
+  }
+
+  public void fillAddress(ContactData addressData) {
     click(By.name("address"));
-    type(By.name("address"), address);
+    type(By.name("address"), addressData.getAddress());
 
   }
 
-  public void fillName(NameData nameData) {
+  public void fillName(ContactData nameData) {
     type(By.name("firstname"), nameData.getFirstName());
     click(By.name("theform"));
     type(By.name("lastname"), nameData.getLastName());
