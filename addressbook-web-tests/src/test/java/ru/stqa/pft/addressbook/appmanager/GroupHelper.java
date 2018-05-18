@@ -9,6 +9,10 @@ import ru.stqa.pft.addressbook.model.GroupData;
  */
 public class GroupHelper extends HelperBase {
 
+  public void initGroupModification () {
+    click(By.name("edit"));
+  }
+
   public GroupHelper(FirefoxDriver wd) {
     super(wd);
   }
@@ -40,5 +44,9 @@ public class GroupHelper extends HelperBase {
     if (!wd.findElement(By.xpath("//div[@id='content']/form/span[2]/input")).isSelected()) {
       click(By.xpath("//div[@id='content']/form/span[2]/input"));
     }
+  }
+
+  public void submitGroupModification() {
+    click(By.name("update"));
   }
 }

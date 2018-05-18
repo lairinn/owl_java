@@ -18,5 +18,13 @@ public class NavigationHelper extends HelperBase {
 
   public void gotoCreateContact() {
     click(By.linkText("add new"));
+}
+
+  public void gotoContactMod() {
+    click(By.xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img"));
+      }
+
+  public void gotoHome() {
+    click(By.linkText("home"));
   }
 }

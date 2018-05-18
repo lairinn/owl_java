@@ -31,7 +31,7 @@ public class ContactHelper extends HelperBase {
   }
 
   public void fillAddress(String address) {
-    click(By.name("theform"));
+    click(By.name("address"));
     type(By.name("address"), address);
 
   }
@@ -40,5 +40,13 @@ public class ContactHelper extends HelperBase {
     type(By.name("firstname"), nameData.getFirstName());
     click(By.name("theform"));
     type(By.name("lastname"), nameData.getLastName());
+  }
+
+  public void submitContactUpdate() {
+    click(By.name("update"));
+  }
+
+  public void deleteContact() {
+    click(By.xpath("//div[@id='content']/form[2]/input[2]"));
   }
 }
