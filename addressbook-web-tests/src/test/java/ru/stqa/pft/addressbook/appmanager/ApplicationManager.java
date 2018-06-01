@@ -45,9 +45,9 @@ public class ApplicationManager {
     } else if (Objects.equals(browser, BrowserType.CHROME)) {
       wd = new ChromeDriver();
     } else if (Objects.equals(browser, BrowserType.IE)) {
-      wd = new InternetExplorerDriver();
+        wd = new InternetExplorerDriver();
     }
-       wd.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+      // wd.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
     groupHelper = new GroupHelper(wd);
     navigationHelper = new NavigationHelper(wd);
     sessionHelper = new SessionHelper(wd);
