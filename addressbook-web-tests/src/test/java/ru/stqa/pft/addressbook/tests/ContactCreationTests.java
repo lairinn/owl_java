@@ -28,6 +28,7 @@ public class ContactCreationTests extends TestBase {
    //   }
    // }
    //contact.setId(max); версия с циклом
+
     before.add(contact);
     Comparator<? super ContactData> byId = (c1, c2) -> Integer.compare(c1.getId(),c2.getId());
     before.sort(byId);
