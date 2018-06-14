@@ -12,7 +12,7 @@ public class NavigationHelper extends HelperBase {
     super(wd);
   }
 
-  public void gotoGroupPage() {
+  public void groupPage() {
     if (isElementPresent(By.tagName("h1"))
             && wd.findElement(By.tagName("h1")).getText().equals("Groups")
             && isElementPresent(By.name("new")))
@@ -22,15 +22,15 @@ public class NavigationHelper extends HelperBase {
     click(By.linkText("groups"));
   }
 
-  public void gotoCreateContact() {
+  public void createContact() {
     click(By.linkText("add new"));
   }
 
-  public void gotoContactMod() {
+  public void contactMod() {
     click(By.xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img"));
   }
 
-  public void gotoHome() {
+  public void home() {
     if(isElementPresent(By.id("maintable")))
     {
       return;
