@@ -39,7 +39,7 @@ public class ContactHelper extends HelperBase {
     attach(By.name("photo"), contactData.getPhoto());
 
     if (creation) {
-      new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
+      new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(String.valueOf(contactData.getGroups()));
     } else {
       Assert.assertFalse(isElementPresent(By.name("new_group")));
     }
@@ -49,6 +49,8 @@ public class ContactHelper extends HelperBase {
   public void submitContactUpdate() {
     click(By.name("update"));
   }
+
+
 
   public void delete() {
     click(By.xpath("//div[@id='content']/form[2]/input[2]"));

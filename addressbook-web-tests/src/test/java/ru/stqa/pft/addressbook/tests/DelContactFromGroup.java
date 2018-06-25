@@ -20,9 +20,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.testng.Assert.assertEquals;
 
 /**
- * Created by ishulga on 18.05.2018.
+ * Created by ishulga on 25.06.2018.
  */
-public class ContactDeletionTests extends TestBase {
+public class DelContactFromGroup extends TestBase {
 
   @BeforeMethod
 
@@ -30,10 +30,9 @@ public class ContactDeletionTests extends TestBase {
     if (app.db().contacts().size() == 0) {
       app.goTo().home();
       app.contact().createContact(new ContactData().
-              withFirstName("Ivan").withLastName("Ivanov").withAddress("St.Petersburg, street Street, house 1").withHome("+78126666666").withEmail("example@test.ru").withGroup("test1"), true);
+              withFirstName("Ivan").withLastName("Ivanov").withAddress("St.Petersburg, street Street, house 1").withHome("+78126666666").withEmail("example@test.ru"), false);
     }
   }
-
   @DataProvider
   public Iterator<Object[]> validContacts() throws IOException {
     BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.xml")));
@@ -49,18 +48,17 @@ public class ContactDeletionTests extends TestBase {
     return  contacts.stream().map((c) -> new Object[] {c}).collect(Collectors.toList()).iterator();
   }
 
-  @Test (dataProvider = "validContacts")
+  @Test(dataProvider = "validContacts")
 
-  public void testContactDeletion() {
+  public void testDelContactFromGroup () {
     Contacts before = app.db().contacts();
-    ContactData deletedContact = before.iterator().next();
-    app.goTo().contactMod();
-    app.contact().delete();
+    app.goTo().home();
+    app.deletefromgroup();
     Contacts after = app.db().contacts();
-    assertEquals(after.size(), before.size() - 1);
-    assertThat(after, equalTo(before.without(deletedContact)));
+    assertEquals(after.size(), before.size());
+    assertThat(after, equalTo(before));
     verifyContactListInUI();
-
   }
 
- }
+
+}

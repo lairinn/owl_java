@@ -4,15 +4,15 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 @XStreamAlias("contact")
 @Entity(name = "addressbook")
 public class ContactData {
+
   @XStreamOmitField
   @Id
   @Column(name = "id")
@@ -34,6 +34,9 @@ public class ContactData {
   private String group;
   @Transient
   private String allPhones;
+  @ManyToMany (fetch = FetchType.EAGER)
+  @JoinTable (name = "address_in_groups", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn (name = "group_id"))
+  private Set<GroupData> groups = new HashSet<GroupData>();
 
   @Override
   public boolean equals(Object o) {
@@ -53,7 +56,7 @@ public class ContactData {
     if (home != null ? !home.equals(that.home) : that.home != null) return false;
     if (mobile != null ? !mobile.equals(that.mobile) : that.mobile != null) return false;
     if (work != null ? !work.equals(that.work) : that.work != null) return false;
-    if (group != null ? !group.equals(that.group) : that.group != null) return false;
+   // if (group != null ? !group.equals(that.group) : that.group != null) return false;
     if (allPhones != null ? !allPhones.equals(that.allPhones) : that.allPhones != null) return false;
     if (allMails != null ? !allMails.equals(that.allMails) : that.allMails != null) return false;
     if (allAddresses != null ? !allAddresses.equals(that.allAddresses) : that.allAddresses != null) return false;
@@ -61,7 +64,9 @@ public class ContactData {
 
   }
 
+
   @Override
+
   public int hashCode() {
     int result = id;
     result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
@@ -74,7 +79,7 @@ public class ContactData {
     result = 31 * result + (home != null ? home.hashCode() : 0);
     result = 31 * result + (mobile != null ? mobile.hashCode() : 0);
     result = 31 * result + (work != null ? work.hashCode() : 0);
-    result = 31 * result + (group != null ? group.hashCode() : 0);
+    //result = 31 * result + (group != null ? group.hashCode() : 0);
     result = 31 * result + (allPhones != null ? allPhones.hashCode() : 0);
     result = 31 * result + (allMails != null ? allMails.hashCode() : 0);
     result = 31 * result + (allAddresses != null ? allAddresses.hashCode() : 0);
@@ -153,8 +158,12 @@ public class ContactData {
     return allMails;
   }
 
+  public Groups getGroups() {
+    return new Groups(groups);
+  }
+
   public String getGroup() {
-    return group;
+   return group;
   }
 
   public int getId() {
@@ -234,10 +243,13 @@ public class ContactData {
     return this;
   }
 
-  public ContactData withGroup(String group) {
-    this.group = group;
-    return this;
+ public ContactData withGroup(String group) {
+   //groups.add(group);
+   this.group = group;
+       return this;
   }
+
+
 
   @Override
   public String toString() {
@@ -250,4 +262,9 @@ public class ContactData {
   }
 
 
+  public ContactData inGroup(GroupData group) {
+    groups.add(group);
+    return this;
+
+  }
 }

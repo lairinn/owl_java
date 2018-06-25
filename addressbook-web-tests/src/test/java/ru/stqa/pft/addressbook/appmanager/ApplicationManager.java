@@ -1,5 +1,6 @@
 package ru.stqa.pft.addressbook.appmanager;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -88,5 +89,22 @@ public class ApplicationManager {
 
   public DbHelper db() {
     return dbHelper;
+  }
+
+  public void addToGroup() {
+    if (!wd.findElement(By.id("5")).isSelected()) {
+      wd.findElement(By.id("5")).click();
+    }
+    wd.findElement(By.name("add")).click();
+    wd.findElement(By.linkText("group page \"aaaa\"")).click();
+  }
+
+  public void deletefromgroup() {
+    wd.findElement(By.linkText("group page \"aaaa\"")).click();
+    wd.findElement(By.id("container")).click();
+    if (!wd.findElement(By.id("5")).isSelected()) {
+      wd.findElement(By.id("5")).click();
+    }
+    wd.findElement(By.name("remove")).click();
   }
 }
