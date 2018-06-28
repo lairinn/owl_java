@@ -36,5 +36,12 @@ public class NavigationHelper extends HelperBase {
       return;
     }
     click(By.linkText("home"));
+      }
+
+  public void selectGroup(int id){
+    if (isElementPresent(By.id("maintable"))){
+      return;
+    }
+    click(By.cssSelector("a[href='./?group=" + id + "']"));
   }
 }

@@ -141,6 +141,24 @@ public class ContactHelper extends HelperBase {
             withSecAddress(secaddress).withEmail2(emailtwo).withEmail3(emailthree);
 
   }
+  public void selectContact(int id) {
+    wd.findElement(By.cssSelector("input[value ='" + id + "']")).click();
+  }
+
+  public void addInGroup(int id){
+    Select selectGroup = new Select(wd.findElement(By.cssSelector("select[name='to_group']")));
+    selectGroup.selectByValue(Integer.toString(id));
+    click(By.name("add"));
+  }
+
+  public void findGroup(int id) {
+    click(By.cssSelector("#right"));
+    click(By.cssSelector("#right>select>option[value='" + id + "']"));
+  }
+
+  public void delContactFromGroup(){
+    click(By.cssSelector("input[name='remove']"));
+  }
 
   private void intContactModificationById(int id) {
     WebElement checkbox = wd.findElement(By.cssSelector(String.format("input[value='%s']", id)));

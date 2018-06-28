@@ -6,6 +6,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
+import ru.stqa.pft.addressbook.model.GroupData;
+import ru.stqa.pft.addressbook.model.Groups;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,37 +29,46 @@ public class DelContactFromGroup extends TestBase {
   @BeforeMethod
 
   public void ensurePreconditions() {
+    Groups groups = app.db().groups();
+
+    if (app.db().groups().size() == 0) {
+      app.goTo().groupPage();
+      app.group().create(new GroupData().withName("testName").withFooter("FooterTest").withHeader("HeaderTest"));
+      groups = app.db().groups();
+    }
+
+    app.goTo().home();
     if (app.db().contacts().size() == 0) {
-      app.goTo().home();
-      app.contact().createContact(new ContactData().
-              withFirstName("Ivan").withLastName("Ivanov").withAddress("St.Petersburg, street Street, house 1").withHome("+78126666666").withEmail("example@test.ru"), false);
+      app.contact().create(new ContactData().withFirstName("Ivan").withLastName("Ivanov").withHome("111").withMobile("222").withWork("333").withEmail("email1").withEmail2("email2").withEmail3("email3").inGroup(groups.iterator().next()), true);
     }
-  }
-  @DataProvider
-  public Iterator<Object[]> validContacts() throws IOException {
-    BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.xml")));
-    String xml = "";
-    String line = reader.readLine();
-    while (line !=null) {
-      xml += line;
-      line = reader.readLine();
-    }
-    XStream xstream = new XStream();
-    xstream.processAnnotations(ContactData.class);
-    List<ContactData> contacts = (List<ContactData>) xstream.fromXML(xml);
-    return  contacts.stream().map((c) -> new Object[] {c}).collect(Collectors.toList()).iterator();
   }
 
-  @Test(dataProvider = "validContacts")
+
+
+  @Test
 
   public void testDelContactFromGroup () {
-    Contacts before = app.db().contacts();
+    Contacts contacts = app.db().contacts();
+    Iterator<ContactData> iteratorContacts = contacts.iterator();
+    ContactData contact = iteratorContacts.next();
+    GroupData group = contact.getGroups().iterator().next();
     app.goTo().home();
-    app.deletefromgroup();
-    Contacts after = app.db().contacts();
-    assertEquals(after.size(), before.size());
-    assertThat(after, equalTo(before));
-    verifyContactListInUI();
+
+    while (iteratorContacts.hasNext()) {
+      if (contact.getGroups().size() > 0) {
+        group = contact.getGroups().iterator().next();
+        app.contact().findGroup(group.getId());
+        break;
+      } else {
+        contact = iteratorContacts.next();
+      }
+    }
+    app.contact().selectContact(contact.getId());
+    app.contact().delContactFromGroup();
+    app.goTo().selectGroup(group.getId());
+    Groups groupsContactsAfter = app.db().contact(contact.getId()).iterator().next().getGroups();
+
+    assertThat(groupsContactsAfter, equalTo(contact.getGroups().without(group)));
   }
 
 
