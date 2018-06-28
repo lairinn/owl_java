@@ -43,5 +43,11 @@
     <orderEntry type="library" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" level="project" />
     <orderEntry type="library" name="Gradle: com.beust:jcommander:1.48" level="project" />
     <orderEntry type="library" name="Gradle: net.bytebuddy:byte-buddy:1.8.3" level="project" />
+    <orderEntry type="library" name="Gradle: commons-net:commons-net:3.6" level="project" />
+    <orderEntry type="library" name="Gradle: org.subethamail:subethasmtp:3.1.7" level="project" />
+    <orderEntry type="library" name="Gradle: javax.mail:mail:1.4.4" level="project" />
+    <orderEntry type="library" name="Gradle: javax.activation:activation:1.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.6.1" level="project" />
+    <orderEntry type="library" name="Gradle: ru.lanwen.verbalregex:java-verbal-expressions:1.5" level="project" />
   </component>
 </module>
