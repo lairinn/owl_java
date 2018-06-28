@@ -1,7 +1,6 @@
 package ru.stqa.pft.mantis.appmanager;
 
 import org.openqa.selenium.By;
-import ru.stqa.pft.mantis.tests.TestBase;
 
 /**
  * Created by ishulga on 28.06.2018.
@@ -26,4 +25,6 @@ public LoginHelper(ApplicationManager app) {
   public void goToUsers(){
     wd.get(app.getProperty("web.userURL"));
   }
+
+
 }

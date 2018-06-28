@@ -1,6 +1,7 @@
 package ru.stqa.pft.mantis.appmanager;
 
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -78,6 +79,12 @@ public class ApplicationManager {
       registrationHelper = new RegistrationHelper(this);
     }
     return registrationHelper;
+  }
+
+  public void changePassword() {
+    wd.findElement(By.linkText("test")).click();
+    wd.findElement(By.xpath("//form[@id='manage-user-reset-form']/fieldset/span/input")).click();
+    wd.quit();
   }
 
   public FtpHelper ftp() {
