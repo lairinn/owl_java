@@ -1,13 +1,21 @@
 package ru.stqa.pft.mantis.tests;
 
 
+import biz.futureware.mantis.rpc.soap.client.MantisConnectLocator;
+import biz.futureware.mantis.rpc.soap.client.MantisConnectPortType;
 import org.openqa.selenium.remote.BrowserType;
+import org.testng.SkipException;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import ru.stqa.pft.mantis.appmanager.ApplicationManager;
 
+import javax.xml.rpc.ServiceException;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.rmi.RemoteException;
 
 /**
  * Created by ishulga on 16.05.2018.
@@ -29,5 +37,25 @@ public class TestBase {
     app.stop();
   }
 
+  public MantisConnectPortType getMantisConnect() throws ServiceException, MalformedURLException {
+    return new MantisConnectLocator().getMantisConnectPort(new URL("http://localhost/mantisbt-2.15.0/api/soap/mantisconnect.php"));
+  }
+
+
+
+  public void skipIfNotFixed(int issueId) throws RemoteException, ServiceException, MalformedURLException {
+    if (isIssueOpen(issueId)) {
+      throw new SkipException("Ignored because of issue " + issueId);
+    }
+  }
+
+  private boolean isIssueOpen(int issueId) throws MalformedURLException, ServiceException, RemoteException {
+    app.soap().getMantisConnect();
+  boolean issue = getMantisConnect().mc_issue_checkin("administrator", "root", BigInteger.valueOf(issueId), null, true);
+    if (issue) {
+      return true;
+    } else
+    return false;
+  }
 
 }
