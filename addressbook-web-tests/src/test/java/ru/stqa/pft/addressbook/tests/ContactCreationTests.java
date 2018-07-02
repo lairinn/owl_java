@@ -40,7 +40,7 @@ public class ContactCreationTests extends TestBase {
     File photo = new File("src/test/resources/image.png");
     //ContactData contact = new ContactData().
            // withFirstName("Ivan").withLastName("Ivanov").withAddress("St.Petersburg, street Street, house 1").withHome("+78126666666").
-          //  withEmail("example@test.ru"). withGroup("test1").withPhoto(photo);
+          // withEmail("example@test.ru"). withGroup("test1").withPhoto(photo);
     app.contact().create(contact, true);
     Contacts after = app.db().contacts();
     assertThat(after.size(), equalTo(before.size() + 1));

@@ -31,11 +31,12 @@ public class ApplicationManager {
   private FtpHelper ftp;
   private MailHelper mailHelper;
   private LoginHelper loginHelper;
+  private DBHelper dbHelper;
 
 
-  public ApplicationManager(String browser)  {
+  public ApplicationManager(String browser) {
     this.browser = browser;
-        properties = new Properties();
+    properties = new Properties();
 
   }
 
@@ -49,24 +50,25 @@ public class ApplicationManager {
   }
 
   public void init() throws IOException {
+    dbHelper = new DBHelper();
     String target = System.getProperty("target", "local");
     properties.load(new FileReader(new File(String.format("src/test/resources/%s.properties", target))));
-    }
+  }
 
   public void stop() {
-    if (wd !=null) {
+    if (wd != null) {
       wd.quit();
     }
   }
 
   public LoginHelper login() {
-    if(loginHelper == null) {
+    if (loginHelper == null) {
       loginHelper = new LoginHelper(this);
     }
     return loginHelper;
   }
 
-  public HttpSession newSession () {
+  public HttpSession newSession() {
     return new HttpSession(this);
   }
 
@@ -93,6 +95,10 @@ public class ApplicationManager {
     }
     return ftp;
   }
+  public DBHelper db() {
+    return dbHelper;
+  }
+
 
   public WebDriver getDriver() {
     if (wd == null) {
