@@ -51,7 +51,8 @@ public class ContactDeletionTests extends TestBase {
 
   @Test (dataProvider = "validContacts")
 
-  public void testContactDeletion() {
+  public void testContactDeletion() throws IOException {
+    skipIfNotFixed(1);
     Contacts before = app.db().contacts();
     ContactData deletedContact = before.iterator().next();
     app.goTo().contactMod();

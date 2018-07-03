@@ -4,18 +4,18 @@ package ru.stqa.pft.addressbook.tests;
 import org.openqa.selenium.remote.BrowserType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.SkipException;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import ru.stqa.pft.addressbook.appmanager.ApplicationManager;
-import ru.stqa.pft.addressbook.model.ContactData;
-import ru.stqa.pft.addressbook.model.Contacts;
-import ru.stqa.pft.addressbook.model.GroupData;
-import ru.stqa.pft.addressbook.model.Groups;
+import ru.stqa.pft.addressbook.model.*;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -63,10 +63,28 @@ public void logTestStart (Method m, Object[] p) {
     if (Boolean.getBoolean("verifyUI")) {
       Contacts dbContacts = app.db().contacts();
       Contacts uiContacts = app.contact().all();
-    assertThat(uiContacts, equalTo(dbContacts.stream()
+      assertThat(uiContacts, equalTo(dbContacts.stream()
               .map((c) -> new ContactData().withId(c.getId()).withLastName(c.getFirstName()).withLastName(c.getLastName()))
               .collect(Collectors.toSet())));
     }
   }
 
+    public void skipIfNotFixed(int issueId) throws IOException {
+      if (isIssueOpen(issueId)) {
+        throw new SkipException("Ignored because of issue " + issueId);
+
+      }
+    }
+
+  private boolean isIssueOpen(int issueId) throws IOException {
+    Set<Issue> set = app.rest().getIssues();
+    Set<Issue> collect = set.stream().filter((Issue i) -> i.getId() == issueId).collect(Collectors.toSet());
+    if(collect.size() == 0){
+      return true;
+    }
+    return false;
+  }
+
 }
+
+

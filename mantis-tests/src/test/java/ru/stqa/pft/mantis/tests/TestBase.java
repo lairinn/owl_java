@@ -1,6 +1,7 @@
 package ru.stqa.pft.mantis.tests;
 
 
+import biz.futureware.mantis.rpc.soap.client.IssueData;
 import biz.futureware.mantis.rpc.soap.client.MantisConnectLocator;
 import biz.futureware.mantis.rpc.soap.client.MantisConnectPortType;
 import org.openqa.selenium.remote.BrowserType;
@@ -37,10 +38,10 @@ public class TestBase {
     app.stop();
   }
 
-  public MantisConnectPortType getMantisConnect() throws ServiceException, MalformedURLException {
-    return new MantisConnectLocator().getMantisConnectPort(new URL("http://localhost/mantisbt-2.15.0/api/soap/mantisconnect.php"));
-  }
 
+  public MantisConnectPortType getMantisConnect() throws ServiceException, MalformedURLException {
+    return new MantisConnectLocator().getMantisConnectPort(new URL("web.soapURL"));
+  }
 
 
   public void skipIfNotFixed(int issueId) throws RemoteException, ServiceException, MalformedURLException {
@@ -51,11 +52,11 @@ public class TestBase {
 
   private boolean isIssueOpen(int issueId) throws MalformedURLException, ServiceException, RemoteException {
     app.soap().getMantisConnect();
-  boolean issue = getMantisConnect().mc_issue_checkin("administrator", "root", BigInteger.valueOf(issueId), null, true);
+    boolean issue = getMantisConnect().mc_issue_checkin("web.adminLogin", "web.adminPassword", BigInteger.valueOf(issueId), null, true);
     if (issue) {
       return true;
     } else
-    return false;
+      return false;
   }
 
 }

@@ -10,7 +10,6 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.BrowserType;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Objects;
@@ -31,6 +30,7 @@ public class ApplicationManager {
   private GroupHelper groupHelper;
   private String browser;
   private DbHelper dbHelper;
+  private RestHelper restHelper;
 
   public ApplicationManager(String browser)  {
     this.browser = browser;
@@ -78,6 +78,13 @@ public class ApplicationManager {
     return groupHelper;
   }
 
+  public RestHelper rest() {
+    if (restHelper == null) {
+      restHelper = new RestHelper(this);
+    }
+    return restHelper;
+  }
+
   public NavigationHelper goTo() {
 
     return navigationHelper;
@@ -106,5 +113,9 @@ public class ApplicationManager {
       wd.findElement(By.id("5")).click();
     }
     wd.findElement(By.name("remove")).click();
+  }
+
+  public String getProperty(String key) {
+    return properties.getProperty(key);
   }
 }
