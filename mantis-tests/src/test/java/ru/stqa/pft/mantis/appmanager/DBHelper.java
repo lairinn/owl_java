@@ -19,7 +19,7 @@ public class DBHelper {
 
   public DBHelper() {
     final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-            .configure() // configures settings from hibernate.cfg.xml
+            .configure()
             .build();
     sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
 
@@ -27,7 +27,7 @@ public class DBHelper {
   public Users users() {
     Session session = sessionFactory.openSession();
     session.beginTransaction();
-    List<UserData> result = session.createQuery("from mantis_user_table").list();
+    List<UserData> result = session.createQuery("from mantis_user_table t where t.username != 'administrator'").list();
     session.getTransaction().commit();
     session.close();
     return new Users(result);
