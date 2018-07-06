@@ -17,17 +17,31 @@ public class ContactData {
   @Id
   @Column(name = "id")
   private int id = Integer.MAX_VALUE;
+  @Column(name = "firstname")
   private String firstName;
   private String lastName;
+  @Column(name = "email")
+  @Type(type = "text")
   private String email;
+  @Column(name = "email2")
+  @Type(type = "text")
   private String email2;
+  @Column(name = "email3")
+  @Type(type = "text")
   private String email3;
+  @Column(name = "address")
+  @Type(type = "text")
   private String address;
+  @Column(name = "address2")
+  @Type(type = "text")
   private String address2;
+  @Column(name = "home")
   @Type(type = "text")
   private String home;
+  @Column(name = "mobile")
   @Type(type = "text")
   private String mobile;
+  @Column(name = "mobile")
   @Type(type = "text")
   private String work;
   @Transient

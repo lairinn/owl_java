@@ -74,23 +74,23 @@ public void logTestStart (Method m, Object[] p) {
     }
   }
 
-    public void skipIfNotFixed(int issueId) throws IOException {
-      if (isIssueOpen(issueId)) {
-        throw new SkipException("Ignored because of issue " + issueId);
+    //public void skipIfNotFixed(int issueId) throws IOException {
+    //  if (isIssueOpen(issueId)) {
+      //  throw new SkipException("Ignored because of issue " + issueId);
 
-      }
-    }
+    //  }
+  //  }
 
-  private boolean isIssueOpen(int issueId) throws IOException {
-    String json = RestAssured.get(
-            String.format("http://demo.bugify.com/api/issues/%s.json",issueId)).asString();
-    JsonElement parsed = new JsonParser().parse(json);
-    JsonElement issues = parsed.getAsJsonObject().get("issues");
-    Set<Issue> newIssues = new Gson().fromJson(issues,new TypeToken<Set<Issue>>(){}.getType());
-    String s = newIssues.iterator().next().getState();
-    if(s.equals("Resolved")){return false;}
-    return true;
-  }
+//  private boolean isIssueOpen(int issueId) throws IOException {
+  //  String json = RestAssured.get(
+       //     String.format("http://demo.bugify.com/api/issues/%s.json",issueId)).asString();
+   // JsonElement parsed = new JsonParser().parse(json);
+    //JsonElement issues = parsed.getAsJsonObject().get("issues");
+    //Set<Issue> newIssues = new Gson().fromJson(issues,new TypeToken<Set<Issue>>(){}.getType());
+   // String s = newIssues.iterator().next().getState();
+  //  if(s.equals("Resolved")){return false;}
+  //  return true;
+ // }
   }
 
 
