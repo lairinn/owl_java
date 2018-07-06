@@ -27,10 +27,9 @@ public class ChangePasswordTests extends TestBase {
   @Test
   public void testChangePassword() throws IOException, MessagingException {
     String password = "password";
-       Users atStart = app.db().users();
+    Users atStart = app.db().users();
     UserData passwordResetUser = atStart.iterator().next();
     UserData user = new UserData().withId(passwordResetUser.getId()).withEmail(passwordResetUser.getEmail()).withUsername(passwordResetUser.getUsername());
-
     app.login().loginTo();
     app.login().goToUsers();
     app.changePassword();

@@ -1,7 +1,6 @@
 package ru.stqa.pft.mantis.tests;
 
 
-import biz.futureware.mantis.rpc.soap.client.IssueData;
 import biz.futureware.mantis.rpc.soap.client.MantisConnectLocator;
 import biz.futureware.mantis.rpc.soap.client.MantisConnectPortType;
 import org.openqa.selenium.remote.BrowserType;
@@ -9,6 +8,7 @@ import org.testng.SkipException;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import ru.stqa.pft.mantis.appmanager.ApplicationManager;
+import ru.stqa.pft.mantis.model.Issue;
 
 import javax.xml.rpc.ServiceException;
 import java.io.File;
@@ -52,7 +52,7 @@ public class TestBase {
 
   private boolean isIssueOpen(int issueId) throws MalformedURLException, ServiceException, RemoteException {
     app.soap().getMantisConnect();
-    boolean issue = getMantisConnect().mc_issue_checkin("web.adminLogin", "web.adminPassword", BigInteger.valueOf(issueId), null, true);
+boolean issue = getMantisConnect().mc_issue_checkin("web.adminLogin", "web.adminPassword", BigInteger.valueOf(issueId), null, true);
     if (issue) {
       return true;
     } else

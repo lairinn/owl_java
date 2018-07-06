@@ -1,6 +1,11 @@
 package ru.stqa.pft.addressbook.tests;
 
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
+import com.jayway.restassured.RestAssured;
 import org.openqa.selenium.remote.BrowserType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,14 +82,17 @@ public void logTestStart (Method m, Object[] p) {
     }
 
   private boolean isIssueOpen(int issueId) throws IOException {
-    Set<Issue> set = app.rest().getIssues();
-    Set<Issue> collect = set.stream().filter((Issue i) -> i.getId() == issueId).collect(Collectors.toSet());
-    if(collect.size() == 0){
-      return true;
-    }
-    return false;
+    String json = RestAssured.get(
+            String.format("http://demo.bugify.com/api/issues/%s.json",issueId)).asString();
+    JsonElement parsed = new JsonParser().parse(json);
+    JsonElement issues = parsed.getAsJsonObject().get("issues");
+    Set<Issue> newIssues = new Gson().fromJson(issues,new TypeToken<Set<Issue>>(){}.getType());
+    String s = newIssues.iterator().next().getState();
+    if(s.equals("Resolved")){return false;}
+    return true;
+  }
   }
 
-}
+
 
 
