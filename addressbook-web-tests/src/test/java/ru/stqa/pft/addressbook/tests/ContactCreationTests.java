@@ -34,7 +34,7 @@ public class ContactCreationTests extends TestBase {
 
   @Test (dataProvider = "validContacts")
   public void testContactCreation(ContactData contact) {
-    Groups groups = app.db().groups();
+    //Groups groups = app.db().groups();
     app.goTo().createContact();
     Contacts before = app.db().contacts();
     File photo = new File("src/test/resources/image.png");

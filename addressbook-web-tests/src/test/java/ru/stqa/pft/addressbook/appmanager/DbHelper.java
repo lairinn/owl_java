@@ -23,19 +23,17 @@ public class DbHelper {
     final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
             .configure() // configures settings from hibernate.cfg.xml
             .build();
-     sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+
+    sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
     }
 
  public Groups groups () {
    Session session = sessionFactory.openSession();
    session.beginTransaction();
-   List<GroupData> result = session.createQuery("from GroupData").list();
-   for (GroupData group : result) {
-     System.out.println(group);
-   }
+   List<GroupData> result = session.createQuery( "from GroupData" ).list();
    session.getTransaction().commit();
    session.close();
-   return new Groups(result);
+   return  new Groups(result);
  }
 
   public Contacts contacts () {

@@ -37,19 +37,19 @@ public class ContactDeletionTests extends TestBase {
   @DataProvider
   public Iterator<Object[]> validContacts() throws IOException {
     BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.xml")));
-    String xml = "";
+   String xml = "";
     String line = reader.readLine();
     while (line !=null) {
       xml += line;
       line = reader.readLine();
-    }
+   }
     XStream xstream = new XStream();
     xstream.processAnnotations(ContactData.class);
     List<ContactData> contacts = (List<ContactData>) xstream.fromXML(xml);
     return  contacts.stream().map((c) -> new Object[] {c}).collect(Collectors.toList()).iterator();
   }
 
-  @Test (dataProvider = "validContacts")
+  @Test //dataProvider = "validContacts")
 
   public void testContactDeletion() throws IOException {
     //skipIfNotFixed(1);
