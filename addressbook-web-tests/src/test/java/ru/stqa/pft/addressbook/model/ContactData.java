@@ -41,7 +41,7 @@ public class ContactData {
   @Column(name = "mobile")
   @Type(type = "text")
   private String mobile;
-  @Column(name = "mobile")
+  @Column(name = "work")
   @Type(type = "text")
   private String work;
   @Transient
