@@ -51,12 +51,17 @@ public class TestBase {
   }
 
   private boolean isIssueOpen(int issueId) throws MalformedURLException, ServiceException, RemoteException {
-    app.soap().getMantisConnect();
-boolean issue = getMantisConnect().mc_issue_checkin("web.adminLogin", "web.adminPassword", BigInteger.valueOf(issueId), null, true);
-    if (issue) {
-      return true;
-    } else
-      return false;
+    //app.soap().getMantisConnect();
+//boolean issue = getMantisConnect().mc_issue_checkin("web.adminLogin", "web.adminPassword", BigInteger.valueOf(issueId), null, true);
+   // if (issue) {
+    //  return true;
+   /// } else
+   //   return false;
+    String status = app.soap().getStatus(issueId);
+    {
+      if (!status.equals("fixed")) return true;
+    }
+    return false;
   }
 
 }

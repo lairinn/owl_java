@@ -46,4 +46,10 @@ public Set<Projects> getProject() throws RemoteException, MalformedURLException,
     return new Issue().withId(createdIssueData.getId().intValueExact()).withSummary(createdIssueData.getSummary()).withDescription(createdIssueData.getDescription()).
             withProject(new Projects().withId(createdIssueData.getProject().getId().intValue()).withName(createdIssueData.getProject().getName()));
   }
+
+  public String getStatus(int issueId) throws MalformedURLException, ServiceException, RemoteException {
+    MantisConnectPortType mc = getMantisConnect();
+    IssueData issueData = mc.mc_issue_get("administrator", "root", BigInteger.valueOf(issueId));
+    return issueData.getResolution().getName();
+  }
 }
