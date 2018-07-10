@@ -7,6 +7,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
+import ru.stqa.pft.addressbook.model.GroupData;
+import ru.stqa.pft.addressbook.model.Groups;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,9 +20,12 @@ import java.util.Set;
  */
 public class ContactHelper extends HelperBase {
 
+  private ApplicationManager app;
 
-  public ContactHelper(WebDriver wd) {
+  public ContactHelper(WebDriver wd, ApplicationManager app)
+  {
     super(wd);
+    this.app = app;
   }
 
 
@@ -145,10 +150,16 @@ public class ContactHelper extends HelperBase {
     wd.findElement(By.cssSelector("input[value ='" + id + "']")).click();
   }
 
-  public void addInGroup(int id){
-    Select selectGroup = new Select(wd.findElement(By.cssSelector("select[name='to_group']")));
-    selectGroup.selectByValue(Integer.toString(id));
-    click(By.name("add"));
+  public void addInGroup(ContactData contact, GroupData group){
+    selectContact(contact.getId());
+    selectGroupByValue(By.name("to_group"), group);
+      click(By.name("add"));
+    app.goTo().home();
+  }
+
+  private void selectGroupByValue(By menuLocator, GroupData group) {
+    Select dropdownlist = new Select(wd.findElement(menuLocator));
+    dropdownlist.selectByValue(String.valueOf(group.getId()));
   }
 
   public void findGroup(int id) {
@@ -156,8 +167,11 @@ public class ContactHelper extends HelperBase {
     click(By.cssSelector("#right>select>option[value='" + id + "']"));
   }
 
-  public void delContactFromGroup(){
+  public void delContactFromGroup(ContactData contact, GroupData group){
+    selectGroupByValue(By.cssSelector("select[name='group']"), group);
+    selectContact(contact.getId());
     click(By.cssSelector("input[name='remove']"));
+    app.goTo().home();
   }
 
   private void intContactModificationById(int id) {
@@ -167,5 +181,50 @@ public class ContactHelper extends HelperBase {
     cells.get(7).findElement(By.tagName("a")).click();
 
     //wd.findElement(By.cssSelector(String.format("a[href='edit.php?id=%s']", id))).click();
+  }
+
+
+  public void findFreeGroup(Groups groups) {
+    if (groups.size() == app.db().groups().size()) {
+      app.goTo().groupPage();
+      app.group().create(new GroupData().withName("group").withHeader("header").withFooter("footer"));
+      app.goTo().home();
+    }
+  }
+
+    public GroupData findGroupToAdd(Groups groupsOfContact) {
+      Groups allGroups = app.db().groups();
+      for(GroupData aGroup: allGroups){
+        if (!groupsOfContact.contains(aGroup)){
+          return aGroup;
+        }
+      }
+      return new GroupData();
+    }
+  public ContactData getContactById(int id) {
+    Contacts contactList = app.db().contacts();
+    for (ContactData contact: contactList){
+      if (contact.getId() == id) {
+        return  contact;
+      }
+    }
+    return new ContactData();
+  }
+
+  public GroupData findContactInGroup(ContactData contact, Groups groupsOfContact) {
+    if (groupsOfContact.size() == 0) {
+      GroupData result = app.db().groups().iterator().next();
+      app.contact().addInGroup(contact, result);
+      return result;
+    } else return groupsOfContact.iterator().next();
+
+  }
+  public void findAnyGroupExists() {
+    if (app.db().groups().size() == 0) {
+      app.goTo().groupPage();
+      app.group().create(new GroupData().withName("Group 1").withHeader("Header 1").withFooter("Footer 1"));
+      app.goTo().home();
+    }
+
   }
 }

@@ -34,43 +34,53 @@ public class AddContactinGroup extends TestBase {
 
   @Test
 
+  //public void testAddToGroup() {
+  // Groups groupBefore = app.db().groups();
+  //Contacts contactBefore = app.db().contacts();
+  // ContactData selectedContact = contactBefore.iterator().next();
+  // Groups groupSelectedContact = selectedContact.getGroups();
+  // GroupData selectedGroup;
+  // Iterator<ContactData> iteratorContacts = contactBefore.iterator();
+
+  // while (iteratorContacts.hasNext()) {
+  //  if (groupSelectedContact.equals(groupBefore)) {
+  //   selectedContact = iteratorContacts.next();
+  //   groupSelectedContact = selectedContact.getGroups();
+  // } else {
+  //    break;
+  //   }
+  // }
+  //  if (groupSelectedContact.equals(groupBefore)) {
+  // app.goTo().groupPage();
+  //  app.group().create(new GroupData().withName("test"));
+  //  }
+  //  groupBefore = app.db().groups();
+  //  groupSelectedContact = selectedContact.getGroups();
+  //  groupBefore.removeAll(groupSelectedContact);
+
+  //  if (groupBefore.size() > 0) {
+  //   selectedGroup = groupBefore.iterator().next();
+  // } else {
+  //    throw new RuntimeException("no groups");
+  //  }
+  // app.goTo().home();
+  // app.contact().selectContact(selectedContact.getId());
+  // app.contact().addInGroup(selectedGroup.getId());
+  // app.goTo().selectGroup(selectedGroup.getId());
+  // ContactData contactAfter = app.db().contact(selectedContact.getId()).iterator().next();
+  // Groups groupsContactAfter = contactAfter.getGroups();
+  // assertThat(groupsContactAfter, equalTo(groupSelectedContact.withAdded(selectedGroup)));
+
+  // }
+
   public void testAddToGroup() {
-    Groups groupBefore = app.db().groups();
-    Contacts contactBefore = app.db().contacts();
-    ContactData selectedContact = contactBefore.iterator().next();
-    Groups groupSelectedContact = selectedContact.getGroups();
-    GroupData selectedGroup;
-    Iterator<ContactData> iteratorContacts = contactBefore.iterator();
-
-    while (iteratorContacts.hasNext()) {
-      if (groupSelectedContact.equals(groupBefore)) {
-        selectedContact = iteratorContacts.next();
-        groupSelectedContact = selectedContact.getGroups();
-      } else {
-        break;
-      }
-    }
-    if (groupSelectedContact.equals(groupBefore)) {
-      app.goTo().groupPage();
-      app.group().create(new GroupData().withName("test"));
-    }
-    groupBefore = app.db().groups();
-    groupSelectedContact = selectedContact.getGroups();
-    groupBefore.removeAll(groupSelectedContact);
-
-    if (groupBefore.size() > 0) {
-      selectedGroup = groupBefore.iterator().next();
-    } else {
-      throw new RuntimeException("no groups");
-    }
-    app.goTo().home();
-    app.contact().selectContact(selectedContact.getId());
-    app.contact().addInGroup(selectedGroup.getId());
-    app.goTo().selectGroup(selectedGroup.getId());
-    ContactData contactAfter = app.db().contact(selectedContact.getId()).iterator().next();
-    Groups groupsContactAfter = contactAfter.getGroups();
-    assertThat(groupsContactAfter, equalTo(groupSelectedContact.withAdded(selectedGroup)));
-
+    ContactData contactToAdd = app.db().contacts().iterator().next();
+    Groups before = contactToAdd.getGroups();
+    app.contact().findFreeGroup(before);
+    GroupData groupToAdd = app.contact().findGroupToAdd(before);
+    app.contact().addInGroup(contactToAdd, groupToAdd);
+    Groups after = app.contact().getContactById(contactToAdd.getId()).getGroups();
+    assertThat(after, equalTo(before.withAdded(groupToAdd)));
   }
 }
 

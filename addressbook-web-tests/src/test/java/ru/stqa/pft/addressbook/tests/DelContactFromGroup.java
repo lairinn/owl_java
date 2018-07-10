@@ -39,27 +39,35 @@ public class DelContactFromGroup extends TestBase {
   @Test
 
   public void testDelContactFromGroup () {
-    Contacts contacts = app.db().contacts();
-    Iterator<ContactData> iteratorContacts = contacts.iterator();
-    ContactData contact = iteratorContacts.next();
-    GroupData group = contact.getGroups().iterator().next();
-    app.goTo().home();
+   // Contacts contacts = app.db().contacts();
+   // Iterator<ContactData> iteratorContacts = contacts.iterator();
+  //  ContactData contact = iteratorContacts.next();
+    //GroupData group = contact.getGroups().iterator().next();
+   // app.goTo().home();
 
-    while (iteratorContacts.hasNext()) {
-      if (contact.getGroups().size() > 0) {
-        group = contact.getGroups().iterator().next();
-        app.contact().findGroup(group.getId());
-        break;
-      } else {
-        contact = iteratorContacts.next();
-      }
-    }
-    app.contact().selectContact(contact.getId());
-    app.contact().delContactFromGroup();
-    app.goTo().selectGroup(group.getId());
-    Groups groupsContactsAfter = app.db().contact(contact.getId()).iterator().next().getGroups();
+   // while (iteratorContacts.hasNext()) {
+  //    if (contact.getGroups().size() > 0) {
+     //   group = contact.getGroups().iterator().next();
+      //  app.contact().findGroup(group.getId());
+      //  break;
+    //  } else {
+     //   contact = iteratorContacts.next();
+    //  }
+  //  }
+   // app.contact().selectContact(contact.getId());
+  //  app.contact().delContactFromGroup();
+  //  app.goTo().selectGroup(group.getId());
+   // Groups groupsContactsAfter = app.db().contact(contact.getId()).iterator().next().getGroups();
 
-    assertThat(groupsContactsAfter, equalTo(contact.getGroups().without(group)));
+   // assertThat(groupsContactsAfter, equalTo(contact.getGroups().without(group)));
+
+    ContactData contactToRemove = app.db().contacts().iterator().next();
+    Groups before = contactToRemove.getGroups();
+    if (before.size() == 0) app.contact().findAnyGroupExists();
+    GroupData groupToRemove = app.contact().findContactInGroup(contactToRemove, before);
+    app.contact().delContactFromGroup(contactToRemove, groupToRemove);
+    Groups after = app.contact().getContactById(contactToRemove.getId()).getGroups();
+    assertThat(after, equalTo(before.without(groupToRemove)));
   }
 
 
